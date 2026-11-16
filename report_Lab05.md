@@ -30,11 +30,22 @@ $$y[n] = s[n] + v[n]$$
 Trong đó $s[n]$ là tín hiệu tiếng nói sạch (clean speech), $v[n]$ là tín hiệu nhiễu nền (acoustic noise), và $y[n]$ là tín hiệu quan sát ghi nhận qua microphone.
 
 * Công suất trung bình và giá trị hiệu dụng (RMS) của tín hiệu có độ dài $N$ mẫu:
-$$P_x = \frac{1}{N} \sum_{n=0}^{N-1} x^2[n], \quad \mathrm{RMS}(x) = \sqrt{P_x}$$
+
+  $$
+  P_x = \frac{1}{N} \sum_{n=0}^{N-1} x^2[n], \quad \mathrm{RMS}(x) = \sqrt{P_x}
+  $$
+
 * Tỷ số tín hiệu trên nhiễu (Signal-to-Noise Ratio - SNR) tính theo thang decibel (dB):
-$$\mathrm{SNR}(\mathrm{dB}) = 10 \log_{10} \left( \frac{P_s}{P_v} \right) = 10 \log_{10} \left( \frac{\sum_{n} s^2[n]}{\sum_{n} v^2[n]} \right)$$
+
+  $$
+  \mathrm{SNR}(\mathrm{dB}) = 10 \log_{10} \left( \frac{P_s}{P_v} \right) = 10 \log_{10} \left( \frac{\sum_{n} s^2[n]}{\sum_{n} v^2[n]} \right)
+  $$
+
 * Để pha trộn tiếng nói sạch $s[n]$ với tín hiệu nhiễu mẫu $v[n]$ nhằm tạo ra tín hiệu nhiễu $y[n] = s[n] + \alpha v[n]$ đạt chính xác mức SNR mục tiêu $R$ (dB), hệ số tỷ lệ $\alpha$ được xác định theo công thức:
-$$\alpha = \sqrt{\frac{P_s}{P_v \cdot 10^{R / 10}}}$$
+
+  $$
+  \alpha = \sqrt{\frac{P_s}{P_v \cdot 10^{R / 10}}}
+  $$
 
 ### 2.2. Biến đổi Fourier thời gian ngắn (STFT) và ước lượng phổ công suất nhiễu
 Tín hiệu $y[n]$ được chia khung với độ dài cửa sổ $w[n]$ là $N_w = 400$ mẫu ($25\text{ ms}$ tại $16\text{ kHz}$), bước nhảy $H = 160$ mẫu ($10\text{ ms}$), nhân cửa sổ Hann và thực hiện FFT kích thước $N_{\mathrm{FFT}} = 512$:
@@ -75,17 +86,34 @@ $$\mathbf{e} = \left[ \mu(c_1 \dots c_D), \sigma(c_1 \dots c_D), \mu(\Delta c_1 
 Vector được chuẩn hóa độ dài Euclid $L_2$: $\mathbf{e} \leftarrow \frac{\mathbf{e}}{\|\mathbf{e}\|_2 + 10^{-12}}$.
 
 ### 2.7. Nhận dạng và Xác thực người nói
+
 1. **Speaker Identification (Đóng tập):**
    * Mô hình đại diện của người nói thứ $i$ ($\mathbf{m}_i$) là trung bình cộng các vector enrollment:
-     $$\mathbf{m}_i = \frac{1}{K} \sum_{k=1}^K \mathbf{e}_{i, k}, \quad \mathbf{m}_i \leftarrow \frac{\mathbf{m}_i}{\|\mathbf{m}_i\|_2}$$
+
+     $$
+     \mathbf{m}_i = \frac{1}{K} \sum_{k=1}^K \mathbf{e}_{i, k}, \quad \mathbf{m}_i \leftarrow \frac{\mathbf{m}_i}{\|\mathbf{m}_i\|_2}
+     $$
+
    * Khoảng cách Cosine giữa test embedding $\mathbf{e}$ và mô hình $\mathbf{m}_i$:
-     $$\cos(\mathbf{e}, \mathbf{m}_i) = \frac{\mathbf{e}^T \mathbf{m}_i}{\|\mathbf{e}\|_2 \|\mathbf{m}_i\|_2}$$
+
+     $$
+     \cos(\mathbf{e}, \mathbf{m}_i) = \frac{\mathbf{e}^T \mathbf{m}_i}{\|\mathbf{e}\|_2 \|\mathbf{m}_i\|_2}
+     $$
+
    * Quyết định nhận dạng chọn người có điểm tương đồng cao nhất:
-     $$\hat{i} = \arg\max_i \cos(\mathbf{e}, \mathbf{m}_i)$$
+
+     $$
+     \hat{i} = \arg\max_i \cos(\mathbf{e}, \mathbf{m}_i)
+     $$
+
 2. **Speaker Verification:**
    * Kiểm tra tuyên bố danh tính với ngưỡng quyết định $\theta$: Chấp nhận (Accept) nếu $\cos(\mathbf{e}, \mathbf{m}_i) \ge \theta$, Từ chối (Reject) nếu $\cos(\mathbf{e}, \mathbf{m}_i) < \theta$.
    * Tỷ lệ chấp nhận sai (False Acceptance Rate - FAR) và Tỷ lệ từ chối sai (False Rejection Rate - FRR):
-     $$\mathrm{FAR}(\theta) = \frac{N_{\text{false\_accept}}}{N_{\text{impostor\_trials}}}, \quad \mathrm{FRR}(\theta) = \frac{N_{\text{false\_reject}}}{N_{\text{genuine\_trials}}}$$
+
+     $$
+     \mathrm{FAR}(\theta) = \frac{N_{\text{false-accept}}}{N_{\text{impostor-trials}}}, \quad \mathrm{FRR}(\theta) = \frac{N_{\text{false-reject}}}{N_{\text{genuine-trials}}}
+     $$
+
    * Ngưỡng tối ưu $\theta^*$ được xác định trên tập phát triển (Development set) tại điểm tiệm cận Equal Error Rate ($\mathrm{FAR} \approx \mathrm{FRR}$), sau đó khóa cố định để kiểm thử trên Test set độc lập.
 
 ### 2.8. Tách nguồn mù bằng FastICA (Blind Source Separation)
@@ -97,7 +125,11 @@ $$\hat{\mathbf{s}}[n] = W \mathbf{x}[n]$$
 
 **Giải quyết hai bất định cố hữu của ICA:**
 1. **Permutation Ambiguity:** Thứ tự hàng của $\hat{\mathbf{s}}$ không cố định. Ta tính ma trận hệ số tương quan chéo tuyệt đối giữa ground-truth và nguồn ước lượng:
-   $$C_{i, j} = \frac{|\sum_n (s_i[n] - \bar{s}_i)(\hat{s}_j[n] - \bar{\hat{s}}_j)|}{\sqrt{\sum_n (s_i[n] - \bar{s}_i)^2 \sum_n (\hat{s}_j[n] - \bar{\hat{s}}_j)^2}}$$
+
+   $$
+   C_{i, j} = \frac{|\sum_n (s_i[n] - \bar{s}_i)(\hat{s}_j[n] - \bar{\hat{s}}_j)|}{\sqrt{\sum_n (s_i[n] - \bar{s}_i)^2 \sum_n (\hat{s}_j[n] - \bar{\hat{s}}_j)^2}}
+   $$
+
    Ghép cặp theo tiêu chí tổng tương quan đường chéo cực đại.
 2. **Sign / Scale Ambiguity:** Biên độ và cực tính của nguồn tách có thể bị phóng đại hoặc đảo dấu âm/dương. Nếu hệ số tương quan trước khi lấy trị tuyệt đối mang giá trị âm, ta nhân nguồn ước lượng với $-1$ để đồng pha với nguồn gốc, sau đó chuẩn hóa đỉnh sóng (peak-normalization) về $0.90$.
 
@@ -200,11 +232,19 @@ Mô hình nhận dạng được xây dựng từ 4 phát ngôn enrollment cho m
 * **Thiết kế tập kiểm định:**
   * Tập phát triển (Development Set): $3\text{ người} \times 2\text{ dev utterances} = 6\text{ phát ngôn}$. Tổng số phép thử: $6$ phép thử Genuine ($m_i = \text{spk}_i$) và $12$ phép thử Impostor ($m_j \neq \text{spk}_i$).
   * Quét ngưỡng $\theta \in [-1.0, 1.0]$ với $401$ điểm chia đều. Điểm cắt tiệm cận Equal Error Rate (EER) trên tập Dev đạt tại:
-    $$\theta^* = 0.9900, \quad \mathrm{FAR}_{\mathrm{dev}} = 0.0000, \quad \mathrm{FRR}_{\mathrm{dev}} = 0.0000$$
+
+    $$
+    \theta^* = 0.9900, \quad \mathrm{FAR}_{\mathrm{dev}} = 0.0000, \quad \mathrm{FRR}_{\mathrm{dev}} = 0.0000
+    $$
+
 * **Đánh giá kiểm thử độc lập (Test Set Verification) với ngưỡng đã khóa $\theta^* = 0.9900$:**
   * Tổng số phép thử Test: $6$ phép thử Genuine và $12$ phép thử Impostor.
   * Tỷ lệ lỗi ghi nhận trên Test Set:
-    $$\mathrm{FAR}_{\mathrm{test}} = 0.0000 \quad (0 / 12), \qquad \mathrm{FRR}_{\mathrm{test}} = 0.0000 \quad (0 / 6)$$
+
+    $$
+    \mathrm{FAR}_{\mathrm{test}} = 0.0000 \quad (0 / 12), \qquad \mathrm{FRR}_{\mathrm{test}} = 0.0000 \quad (0 / 6)
+    $$
+
   * Hệ thống đạt khả năng phân tách ranh giới tuyệt đối trên tập kiểm thử độc lập mà không hề xảy ra hiện tượng "data snooping" (không tối ưu ngưỡng trên test set).
 
 ---
@@ -213,20 +253,42 @@ Mô hình nhận dạng được xây dựng từ 4 phát ngôn enrollment cho m
 
 Thực hiện phân tách hai nguồn nói chồng lấn $s_1$ và $s_2$ ghi nhận qua hai microphone theo mô hình trộn tức thời:
 
-1. **Với ma trận trộn phân tách tốt $A_{\text{easy}} = \begin{bmatrix} 1.0 & 0.6 \\ 0.4 & 1.0 \end{bmatrix}$ ($\det(A) = 0.76$):**
+1. **Với ma trận trộn phân tách tốt $A_{\text{easy}}$ ($\det(A) = 0.76$):**
+
+   $$
+   A_{\text{easy}} = \begin{bmatrix} 1.0 & 0.6 \\ 0.4 & 1.0 \end{bmatrix}
+   $$
+
    * Ma trận tương quan tuyệt đối thô trước khi ghép ($C_{\text{raw}}$):
-     $$C_{\text{raw}} = \begin{bmatrix} 0.0063 & 0.9999 \\ 0.9998 & 0.0180 \end{bmatrix}$$
+
+     $$
+     C_{\text{raw}} = \begin{bmatrix} 0.0063 & 0.9999 \\ 0.9998 & 0.0180 \end{bmatrix}
+     $$
+
      *Phát hiện Permutation:* Hàng 0 của nguồn gốc tương quan lớn nhất với Ước lượng 1 ($0.9999$), còn Hàng 1 tương quan với Ước lượng 0 ($0.9998$). Thứ tự nguồn bị hoán vị ($0 \to 1, 1 \to 0$).
    * Sau khi hoán vị lại và sửa dấu âm (Sign alignment), ma trận tương quan chuẩn hóa đạt:
-     $$C_{\text{aligned}} = \begin{bmatrix} \mathbf{0.99998} & -0.00625 \\ 0.01798 & \mathbf{0.99984} \end{bmatrix}$$
+
+     $$
+     C_{\text{aligned}} = \begin{bmatrix} \mathbf{0.99998} & -0.00625 \\ 0.01798 & \mathbf{0.99984} \end{bmatrix}
+     $$
+
      Tín hiệu sau tách đạt độ tương quan tuyệt đối xấp xỉ $1.000$ so với ground truth, loại bỏ hoàn toàn tiếng nói chen lấn của người còn lại.
 
-2. **Với ma trận trộn gần suy biến $A_{\text{hard}} = \begin{bmatrix} 1.0 & 0.9 \\ 0.95 & 1.0 \end{bmatrix}$ ($\det(A) = 0.145 \approx 0$ - TN7):**
+2. **Với ma trận trộn gần suy biến $A_{\text{hard}}$ ($\det(A) = 0.145 \approx 0$ - TN7):**
+
+   $$
+   A_{\text{hard}} = \begin{bmatrix} 1.0 & 0.9 \\ 0.95 & 1.0 \end{bmatrix}
+   $$
+
    * Do hai micro đặt quá gần nhau, tín hiệu thu nhận tại 2 kênh gần như đồng nhất ($x_1 \approx x_2$). FastICA vẫn hội tụ về mặt toán học sau nhiều vòng lặp hơn, nhưng độ nhạy với sai số tính toán dấu phẩy động tăng mạnh.
 
 3. **Khi micro bị nhiễm tạp âm ngẫu nhiên ($\mathrm{SNR}_{\text{mic}} = 15\text{ dB}$ - TN8):**
    * Ma trận tương quan sau tách suy giảm rõ rệt:
-     $$C_{\text{aligned\_noisy}} = \begin{bmatrix} \mathbf{0.9561} & 0.0163 \\ 0.0564 & \mathbf{0.9643} \end{bmatrix}$$
+
+     $$
+     C_{\text{aligned-noisy}} = \begin{bmatrix} \mathbf{0.9561} & 0.0163 \\ 0.0564 & \mathbf{0.9643} \end{bmatrix}
+     $$
+
      Tương quan giảm từ $0.9999$ xuống $0.9561$. Tiếng sau tách xuất hiện tạp âm xào xạc và một lượng nhỏ rò rỉ âm (cross-talk) từ nguồn thứ hai.
 
 ---
@@ -297,7 +359,11 @@ Dựa trên các bằng chứng thực nghiệm và số liệu đo đạc, nhó
   * Phép đo $\mathrm{SNR}_{\mathrm{out}} = 10 \log_{10} \left( \frac{\sum s^2[n]}{\sum (s[n] - \hat{s}[n])^2} \right)$ sử dụng sai số trực tiếp từng mẫu (sample-by-sample difference) làm mẫu số đại diện cho công suất lỗi. Nếu tín hiệu ước lượng $\hat{s}[n]$ bị lệch pha hoặc dịch chuyển thời gian so với $s[n]$, sai số $e[n] = s[n] - \hat{s}[n]$ sẽ không còn phản ánh nhiễu hay độ méo biên độ, mà bị chi phối bởi độ lệch dạng sóng tức thời.
   * **Nếu thuật toán tạo ra độ trễ (delay) $10\text{ ms}$ ($160\text{ mẫu}$ tại $16\text{ kHz}$):**
     Hai dạng sóng $s[n]$ và $\hat{s}[n] \approx s[n - 160]$ sẽ bị lệch pha hoàn toàn. Khi đó, hiệu số $(s[n] - \hat{s}[n])^2$ có thể tương đương hoặc thậm chí lớn gấp đôi công suất bản thân tín hiệu sạch:
-    $$\sum (s[n] - \hat{s}[n])^2 \approx 2 \sum s^2[n]$$
+
+    $$
+    \sum (s[n] - \hat{s}[n])^2 \approx 2 \sum s^2[n]
+    $$
+
     Khi đưa vào công thức, $\mathrm{SNR}_{\mathrm{out}} \approx 10 \log_{10}(0.5) \approx -3\text{ dB}$, dẫn đến **số đo SNR bị sai lệch trầm trọng theo hướng giảm rất mạnh (báo hiệu tín hiệu cực kỳ tồi tệ)** mặc dù khi nghe bằng tai người, âm thanh vẫn rất trong và sạch. Vì vậy, căn chỉnh độ trễ và biên độ là điều kiện tiên quyết để số đo SNR có giá trị khoa học.
 
 #### Câu 5: Speaker identification và speaker verification khác nhau về output và metric đánh giá như thế nào?
@@ -339,8 +405,17 @@ Dựa trên các bằng chứng thực nghiệm và số liệu đo đạc, nhó
 
 #### Câu 10: Nếu hai hàng của A gần tỉ lệ nhau, điều gì xảy ra? Liên hệ với tính khả nghịch của mixing matrix.
 * **Trả lời:**
-  * Giả sử ma trận trộn $A = \begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix}$. Nếu hai hàng gần tỉ lệ với nhau, tức là $[a_{21}, a_{22}] \approx k [a_{11}, a_{12}]$, thì:
-    $$\det(A) = a_{11} a_{22} - a_{12} a_{21} \approx a_{11}(k a_{12}) - a_{12}(k a_{11}) \to 0$$
+  * Giả sử ma trận trộn $A$:
+
+    $$
+    A = \begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix}
+    $$
+
+    Nếu hai hàng gần tỉ lệ với nhau, tức là $[a_{21}, a_{22}] \approx k [a_{11}, a_{12}]$, thì:
+
+    $$
+    \det(A) = a_{11} a_{22} - a_{12} a_{21} \approx a_{11}(k a_{12}) - a_{12}(k a_{11}) \to 0
+    $$
   * **Hiện tượng xảy ra:**
     * Về mặt vật lý: Hai microphone đặt quá sát nhau trong không gian hoặc môi trường truyền âm từ 2 nguồn đến 2 mic hoàn toàn đối xứng, khiến tín hiệu thu nhận tại Mic 2 chỉ là bản sao phóng đại/thu nhỏ của Mic 1 ($x_2[n] \approx k x_1[n]$). Hệ thống mất đi tính đa dạng không gian (spatial diversity) và thực chất chỉ còn 1 kênh quan sát độc lập.
     * Về mặt toán học: Ma trận $A$ tiệm cận trạng thái suy biến (singular / rank-deficient). Số điều kiện của ma trận (condition number $\kappa(A) = \|A\| \|A^{-1}\|$) tiến tới vô cùng lớn ($A$ trở nên ill-conditioned). Ma trận nghịch đảo $W = A^{-1}$ chứa các phần tử cực lớn, làm khuếch đại sai số tính toán dấu phẩy động và tạp âm nền lên hàng nghìn lần, khiến thuật toán ICA không thể tách được nguồn hoặc cho ra tín hiệu méo mó hoàn toàn.
@@ -350,7 +425,7 @@ Dựa trên các bằng chứng thực nghiệm và số liệu đo đạc, nhó
 
 | Đặc tính | Mô hình trộn tức thời (Instantaneous Mixing) | Thực tế phòng họp có âm vang (Convolutive Mixing) |
 |:---|:---|:---|
-| **Công thức mô hình** | $\mathbf{x}[n] = A \mathbf{s}[n] = \begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix} \begin{bmatrix} s_1[n] \\ s_2[n] \end{bmatrix}$ | $\mathbf{x}[n] = (H * \mathbf{s})[n] = \sum_{\tau=0}^{L_h - 1} H[\tau] \mathbf{s}[n - \tau]$ |
+| **Công thức mô hình** | $\mathbf{x}[n] = A \mathbf{s}[n]$ (với $A \in \mathbb{R}^{2 \times 2}$) | $\mathbf{x}[n] = (H * \mathbf{s})[n] = \sum_{\tau=0}^{L_h - 1} H[\tau] \mathbf{s}[n - \tau]$ |
 | **Bản chất lan truyền** | Âm thanh truyền tức thời không có độ trễ, không phản xạ biên; ma trận $A$ gồm các số thực vô hướng đơn thuần chỉ mô tả độ suy giảm khoảng cách. | Sóng âm truyền với vận tốc hữu hạn ($343\text{ m/s}$), phản xạ liên tục vào tường, trần, bàn ghế tạo ra hàng nghìn xung phản xạ trễ kéo dài từ $200-500\text{ ms}$. |
 | **Phép toán miền tần số** | Phép nhân ma trận hằng số đơn giản. | Phép tích chập thời gian $\to$ Phép nhân ma trận phức phụ thuộc theo từng bin tần số $\mathbf{X}(f) = H(f) \mathbf{S}(f)$. |
 | **Hệ quả đối với ICA** | FastICA miền thời gian 2x2 hoạt động hoàn hảo và tách triệt để. | FastICA cơ bản **thất bại hoàn toàn** vì nguồn tại thời điểm hiện tại tương quan với tiếng vọng trễ của chính nó trong quá khứ; bắt buộc phải sử dụng Frequency-Domain BSS hoặc Independent Vector Analysis (IVA) kèm cơ chế giải quyết hoán vị đa bin (frequency permutation problem). |
