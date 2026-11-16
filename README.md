@@ -52,7 +52,6 @@ Lab05_2351260663_NguyenThiLinh/
 ├── Lab05.py                      # Mã nguồn Python độc lập thực thi toàn bộ pipeline
 ├── Lab05.ipynb                   # Jupyter Notebook hoàn chỉnh có giải thích & output trực quan
 ├── prepare_data.py               # Script chuẩn bị và tổng hợp tập dữ liệu lab5_data/
-├── generate_notebook.py          # Script sinh tự động cấu trúc notebook Lab05.ipynb
 ├── report_Lab05.md               # Báo cáo học thuật chi tiết 4-6 trang đầy đủ 12 câu hỏi
 ├── report.docx                   # File báo cáo Microsoft Word
 ├── report.pdf                    # File báo cáo PDF xuất chuẩn
