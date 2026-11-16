@@ -1,0 +1,272 @@
+{
+  "snr_verification": {
+    "0": {
+      "target": 0.0,
+      "measured": -4.283542606450826e-11,
+      "diff": 4.283542606450826e-11,
+      "alpha": 0.8082352588811617
+    },
+    "5": {
+      "target": 5.0,
+      "measured": 4.999999999957161,
+      "diff": 4.283862153897644e-11,
+      "alpha": 0.45450408654479724
+    },
+    "10": {
+      "target": 10.0,
+      "measured": 9.999999999957147,
+      "diff": 4.285283239369164e-11,
+      "alpha": 0.25558643033203043
+    }
+  },
+  "enhancement_5db": {
+    "spectral_subtraction_beta": {
+      "1.0": {
+        "beta": 1.0,
+        "snr_out": 12.60554059925662,
+        "delta_snr": 7.605540599256621
+      },
+      "1.5": {
+        "beta": 1.5,
+        "snr_out": 12.111274382783513,
+        "delta_snr": 7.111274382783513
+      },
+      "2.0": {
+        "beta": 2.0,
+        "snr_out": 11.497750280695447,
+        "delta_snr": 6.497750280695447
+      }
+    },
+    "wiener": {
+      "snr_out": 13.93123657911266,
+      "delta_snr": 8.93123657911266
+    }
+  },
+  "spectral_floor_gamma": {
+    "0.0": {
+      "floor": 0.0,
+      "snr_out": 14.023169259550281,
+      "delta_snr": 9.023169259550281
+    },
+    "0.01": {
+      "floor": 0.01,
+      "snr_out": 13.024438006306386,
+      "delta_snr": 8.024438006306386
+    },
+    "0.05": {
+      "floor": 0.05,
+      "snr_out": 10.109841732599934,
+      "delta_snr": 5.109841732599934
+    }
+  },
+  "tn1_input_snr_survey": {
+    "0dB": {
+      "input_snr": 0,
+      "ss_snr_out": 8.300944285977554,
+      "ss_delta_snr": 8.300944285977554,
+      "wiener_snr_out": 8.852144185284,
+      "wiener_delta_snr": 8.852144185284
+    },
+    "5dB": {
+      "input_snr": 5,
+      "ss_snr_out": 12.111274382783513,
+      "ss_delta_snr": 7.111274382783513,
+      "wiener_snr_out": 13.93123657911266,
+      "wiener_delta_snr": 8.93123657911266
+    },
+    "10dB": {
+      "input_snr": 10,
+      "ss_snr_out": 12.88474452954781,
+      "ss_delta_snr": 2.8847445295478096,
+      "wiener_snr_out": 14.840823192252886,
+      "wiener_delta_snr": 4.840823192252886
+    }
+  },
+  "speaker_id_baseline": {
+    "accuracy": 1.0,
+    "score_table": [
+      {
+        "test_utterance": "spk01_test_01",
+        "true_speaker": "spk01",
+        "predicted": "spk01",
+        "scores": {
+          "spk01": 0.9989,
+          "spk02": 0.9787,
+          "spk03": 0.9896
+        }
+      },
+      {
+        "test_utterance": "spk01_test_02",
+        "true_speaker": "spk01",
+        "predicted": "spk01",
+        "scores": {
+          "spk01": 0.998,
+          "spk02": 0.9677,
+          "spk03": 0.9831
+        }
+      },
+      {
+        "test_utterance": "spk02_test_01",
+        "true_speaker": "spk02",
+        "predicted": "spk02",
+        "scores": {
+          "spk01": 0.9677,
+          "spk02": 0.9984,
+          "spk03": 0.9799
+        }
+      },
+      {
+        "test_utterance": "spk02_test_02",
+        "true_speaker": "spk02",
+        "predicted": "spk02",
+        "scores": {
+          "spk01": 0.9675,
+          "spk02": 0.9984,
+          "spk03": 0.9804
+        }
+      },
+      {
+        "test_utterance": "spk03_test_01",
+        "true_speaker": "spk03",
+        "predicted": "spk03",
+        "scores": {
+          "spk01": 0.9801,
+          "spk02": 0.9888,
+          "spk03": 0.9965
+        }
+      },
+      {
+        "test_utterance": "spk03_test_02",
+        "true_speaker": "spk03",
+        "predicted": "spk03",
+        "scores": {
+          "spk01": 0.9837,
+          "spk02": 0.9861,
+          "spk03": 0.9982
+        }
+      }
+    ]
+  },
+  "speaker_id_ablations": {
+    "baseline_mfcc_delta": 1.0,
+    "mfcc_only": 1.0,
+    "with_cmn": 1.0,
+    "1_enrollment_token": 1.0,
+    "2_enrollment_tokens": 1.0,
+    "4_enrollment_tokens": 1.0
+  },
+  "speaker_id_noise_enhancement_comparison": {
+    "clean": 1.0,
+    "noisy_5db": 0.3333333333333333,
+    "enhanced_ss": 0.3333333333333333,
+    "enhanced_wiener": 0.6666666666666666
+  },
+  "speaker_verification": {
+    "dev_locked_threshold": 0.99,
+    "dev_far_at_theta": 0.0,
+    "dev_frr_at_theta": 0.0,
+    "dev_eer_approx": 0.0,
+    "test_far": 0.0,
+    "test_frr": 0.0
+  },
+  "bss_ica": {
+    "A_easy": {
+      "det": 0.76,
+      "C_raw": [
+        [
+          0.00625329534146961,
+          0.9999804479575438
+        ],
+        [
+          0.9998382831841379,
+          0.017983533562591247
+        ]
+      ],
+      "C_aligned": [
+        [
+          0.9999804479575438,
+          -0.0062532953414696025
+        ],
+        [
+          0.017983533562591237,
+          0.9998382831841365
+        ]
+      ]
+    },
+    "A_hard_near_singular": {
+      "det": 0.14500000000000002,
+      "C_aligned": [
+        [
+          0.9999828988816911,
+          -0.0058482428276922065
+        ],
+        [
+          0.01757853767175953,
+          0.9998454855693055
+        ]
+      ]
+    },
+    "A_noisy_mixture_15db": {
+      "C_aligned": [
+        [
+          0.9561405562870027,
+          0.016314633795578407
+        ],
+        [
+          0.056439672417971785,
+          0.9642854348013283
+        ]
+      ]
+    }
+  },
+  "summary_8_experiments": [
+    {
+      "TN": 1,
+      "Biến thay đổi": "Input SNR",
+      "Giá trị": "0 / 5 / 10 dB",
+      "Kết quả Delta SNR": "0dB: +8.30 dB, 5dB: +7.11 dB, 10dB: +2.88 dB"
+    },
+    {
+      "TN": 2,
+      "Biến thay đổi": "Spectral Subtraction beta",
+      "Giá trị": "1.0 / 1.5 / 2.0",
+      "Kết quả Delta SNR": "b=1.0: +7.61 dB, b=1.5: +7.11 dB, b=2.0: +6.50 dB"
+    },
+    {
+      "TN": 3,
+      "Biến thay đổi": "Spectral Floor gamma",
+      "Giá trị": "0 / 0.01 / 0.05",
+      "Kết quả Delta SNR": "g=0: +9.02 dB, g=0.01: +8.02 dB, g=0.05: +5.11 dB"
+    },
+    {
+      "TN": 4,
+      "Biến thay đổi": "Feature Speaker",
+      "Giá trị": "MFCC vs MFCC+Delta",
+      "Kết quả Accuracy": "MFCC: 100.0%, MFCC+Delta: 100.0%"
+    },
+    {
+      "TN": 5,
+      "Biến thay đổi": "CMN (Cepstral Mean Norm)",
+      "Giá trị": "off / on",
+      "Kết quả Accuracy": "Off: 100.0%, On: 100.0%"
+    },
+    {
+      "TN": 6,
+      "Biến thay đổi": "Enrollment Tokens",
+      "Giá trị": "1 / 2 / 4 tokens",
+      "Kết quả Accuracy": "1 token: 100.0%, 2 tokens: 100.0%, 4 tokens: 100.0%"
+    },
+    {
+      "TN": 7,
+      "Biến thay đổi": "Mixing Matrix A",
+      "Giá trị": "Easy vs Hard (gần suy biến)",
+      "Kết quả Tương quan chéo": "det(Easy)=0.76 -> rho=1.000; det(Hard)=0.145 -> rho=1.000"
+    },
+    {
+      "TN": 8,
+      "Biến thay đổi": "ICA + Noise",
+      "Giá trị": "Clean Mix vs Noisy Mix (15dB)",
+      "Kết quả Tương quan": "Clean: rho=1.000; Noisy: rho=0.956"
+    }
+  ]
+}
